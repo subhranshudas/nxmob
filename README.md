@@ -16,3 +16,31 @@ In VSC checkout NX extensions and click on the target for RUN-IOS under `demonat
 
 ## Running the Mobile App on IOS
 In VSC checkout NX extensions and click on the target for RUN-ANDROID under `demonative`
+
+
+## Publishing changes
+
+After making changes in GIT
+
+```
+cd packages/uimobile
+```
+
+```
+npm version <minor|patch>
+git push origin main
+```
+
+```
+cd dist/packages/uimobile
+```
+
+```
+npm login
+.
+.
+.
+.
+npm publish --access public
+```
+
