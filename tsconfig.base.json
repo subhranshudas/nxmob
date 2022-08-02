@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@dasubh/uimobile": ["packages/uimobile/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

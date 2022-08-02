@@ -1,0 +1,38 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/uimobile/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/uimobile",
+        "tsConfig": "packages/uimobile/tsconfig.lib.json",
+        "project": "packages/uimobile/package.json",
+        "entryFile": "packages/uimobile/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "assets": [
+          {
+            "glob": "packages/uimobile/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ],
+        "format": [
+          "esm",
+          "cjs"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/uimobile/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

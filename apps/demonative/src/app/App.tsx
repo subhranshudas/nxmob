@@ -13,6 +13,8 @@ import {
 
 import Checkmark from './icons/checkmark.svg';
 
+import { Notification } from '@dasubh/uimobile';
+
 export const App = () => {
   const scrollViewRef = useRef<null | ScrollView>(null);
 
@@ -32,6 +34,8 @@ export const App = () => {
             <Text style={[styles.textXL, styles.appTitleText]} testID="heading">
               Welcome Demonative 👋
             </Text>
+
+            <Notification title='Greetings from User' />
           </View>
           <View style={styles.section}>
             <View style={styles.hero}>
