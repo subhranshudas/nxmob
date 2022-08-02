@@ -1,0 +1,6 @@
+module Pods_Demonative {
+  umbrella header "Pods-Demonative-umbrella.h"
+
+  export *
+  module * { export * }
+}
