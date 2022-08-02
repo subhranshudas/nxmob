@@ -12,7 +12,7 @@
         "tsConfig": "packages/uimobile/tsconfig.lib.json",
         "project": "packages/uimobile/package.json",
         "entryFile": "packages/uimobile/src/index.ts",
-        "external": ["react/jsx-runtime"],
+        "external": ["react/jsx-runtime", "react-native"],
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "assets": [
           {

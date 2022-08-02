@@ -35,7 +35,7 @@ export const App = () => {
               Welcome Demonative 👋
             </Text>
 
-            <Notification title='Greetings from User' />
+            <Notification title='Greetings from the User' />
           </View>
           <View style={styles.section}>
             <View style={styles.hero}>
