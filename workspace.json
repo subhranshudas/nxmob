@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "demonative": "apps/demonative",
+    "demoreact": "packages/demoreact",
     "uimobile": "packages/uimobile"
   }
 }
