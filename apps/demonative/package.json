@@ -9,6 +9,14 @@
     "react-native": "*",
     "react-native-config": "*",
     "react-native-svg": "*",
-    "@react-native-async-storage/async-storage": "*"
+    "@react-native-async-storage/async-storage": "*",
+    "styled-components": "*",
+    "axios": "*",
+    "moment": "*",
+    "react-native-youtube": "*",
+    "react-native-video": "*",
+    "react-native-modal": "*",
+    "react-native-device-detection": "*",
+    "react-native-parsed-text": "*"
   }
 }

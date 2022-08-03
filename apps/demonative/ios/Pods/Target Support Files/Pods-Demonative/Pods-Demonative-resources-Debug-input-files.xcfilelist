@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-Demonative/Pods-Demonative-resources.sh
 ${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle
+${PODS_ROOT}/YoutubePlayer-in-WKWebView/WKYTPlayerView/WKYTPlayerView.bundle

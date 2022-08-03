@@ -15,8 +15,12 @@ import Checkmark from './icons/checkmark.svg';
 
 import { Notification } from '@dasubh/uimobile';
 
+import { DEFAULT_NOTIFICATIONS } from './notificationData';
+import { parseApiResponse } from './helpers';
+
 export const App = () => {
   const scrollViewRef = useRef<null | ScrollView>(null);
+  const notifData = parseApiResponse(DEFAULT_NOTIFICATIONS);
 
   return (
     <>
@@ -30,12 +34,24 @@ export const App = () => {
           style={styles.scrollView}
         >
           <View style={styles.section}>
-            <Text style={styles.textLg}>Hello there,</Text>
-            <Text style={[styles.textXL, styles.appTitleText]} testID="heading">
-              Welcome Demonative 👋
-            </Text>
+            <Text style={styles.textLg}>EPNS notifications below</Text>
+           
+            {notifData.map((oneNotification, idx) => {
+             const {cta, title, message, app, icon, image} = oneNotification;
 
-            <Notification title='Greetings from the User' />
+              return (
+                <Notification
+                  key={idx}
+                  notificationTitle={title}
+                  notificationBody={message}
+                  cta={cta}
+                  app={app}
+                  icon={icon}
+                  image={image}
+                />
+              );
+            })}
+
           </View>
           <View style={styles.section}>
             <View style={styles.hero}>
