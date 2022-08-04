@@ -53,21 +53,6 @@ export const App = () => {
             })}
 
           </View>
-          <View style={styles.section}>
-            <View style={styles.hero}>
-              <View style={styles.heroTitle}>
-                <Checkmark
-                  width={32}
-                  height={32}
-                  stroke="hsla(162, 47%, 50%, 1)"
-                />
-                <Text style={[styles.textLg, styles.heroTitleText]}>
-                  You're up and running
-                </Text>
-              </View>
-      
-            </View>
-          </View>
         </ScrollView>
       </SafeAreaView>
     </>
