@@ -33,6 +33,15 @@ console.warn = (...arg) => {
 };
 LogBox.ignoreLogs(ignoreWarns);
 
+export type NotificationProps = {
+  notificationTitle: string;
+  notificationBody: string;
+  app: string;
+  icon: string;
+  image: string;
+  cta?: string;
+  url?: string;
+};
 
 export const Notification = ({
   notificationTitle = '',
