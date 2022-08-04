@@ -31,6 +31,8 @@ npm version <minor|patch>
 git push origin main
 ```
 
+Use NX to build the `uimobile` package
+
 ```
 cd dist/packages/uimobile
 ```
