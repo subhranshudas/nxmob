@@ -20,7 +20,9 @@ import config from '../config';
 
 import { LogBox } from "react-native";
 
-// hack for ViewPropTypes
+/**
+ ********Temporary hack for ViewPropTypes starts*************
+ */
 const ignoreWarns = [
   "Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'"
 ];
@@ -32,6 +34,10 @@ console.warn = (...arg) => {
     warn(...arg);
 };
 LogBox.ignoreLogs(ignoreWarns);
+/**
+ ********Temporary hack for ViewPropTypes ends*************
+ */
+
 
 export type NotificationProps = {
   notificationTitle: string;
@@ -43,7 +49,7 @@ export type NotificationProps = {
   url?: string;
 };
 
-export const Notification = ({
+export const Notification : React.FC<NotificationProps> = ({
   notificationTitle = '',
   notificationBody = '',
   cta = '',
