@@ -14,7 +14,8 @@ import device from 'react-native-device-detection';
 import { IPFSIcon } from '../ipfsicon';
 import { ParseText } from '../parsetext';
 import GLOBALS from '../globals';
-import { extractTimeStamp, MediaHelper as DownloadHelper } from './helpers';
+import { extractTimeStamp } from './utils';
+import { MediaHelper as DownloadHelper } from '../mediaHelpers';
 
 import config from '../config';
 import chainDetails from './chainDetails';

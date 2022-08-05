@@ -24,11 +24,13 @@ const dummyData = parseApiResponse(DEFAULT_NOTIFICATIONS);
 export const App = () => {
   const [user, setUser] = React.useState('0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1');
   const [notifData, setNotifData] = React.useState([]);
+  const [pageSize, setPageSize] = React.useState('10');
 
   const scrollViewRef = useRef<null | ScrollView>(null);
 
   const getData = async () => {
-    const apiResponse = await fetchNotifications(user);
+    const apiResponse = await fetchNotifications(user, parseInt(pageSize));
+    console.log('\n\ntotal notifs fetched: ', apiResponse.results.length, '\n\n');
     const parsedResults = parseApiResponse(apiResponse.results);
 
     setNotifData([...parsedResults, ...dummyData]);
@@ -53,6 +55,12 @@ export const App = () => {
               style={styles.input}
               onChangeText={setUser}
               value={user}
+            />
+
+            <TextInput
+              style={styles.input}
+              onChangeText={setPageSize}
+              value={pageSize}
             />
 
             <Button
