@@ -7,6 +7,8 @@ import {
   View,
   Text,
   StatusBar,
+  TextInput,
+  Button
   // TouchableOpacity,
   // Linking,
 } from 'react-native';
@@ -15,11 +17,23 @@ import { Notification } from '@dasubh/uimobile';
 
 import { DEFAULT_NOTIFICATIONS } from './notificationData';
 import { parseApiResponse } from './helpers';
+import { fetchNotifications } from './api';
 
-const notifData = parseApiResponse(DEFAULT_NOTIFICATIONS);
+const dummyData = parseApiResponse(DEFAULT_NOTIFICATIONS);
 
 export const App = () => {
+  const [user, setUser] = React.useState('0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1');
+  const [notifData, setNotifData] = React.useState([]);
+
   const scrollViewRef = useRef<null | ScrollView>(null);
+
+  const getData = async () => {
+    const apiResponse = await fetchNotifications(user);
+    const parsedResults = parseApiResponse(apiResponse.results);
+
+    setNotifData([...parsedResults, ...dummyData]);
+  };
+
 
   return (
     <>
@@ -33,7 +47,18 @@ export const App = () => {
           style={styles.scrollView}
         >
           <View style={styles.section}>
-            <Text style={styles.textLg}>EPNS notifications below</Text>
+            <Text>Enter your ETH address: </Text>
+
+            <TextInput
+              style={styles.input}
+              onChangeText={setUser}
+              value={user}
+            />
+
+            <Button
+              title="Fetch Notifs"
+              onPress={() => getData()}
+            />
            
             {notifData.map((oneNotification, idx) => {
              const {cta, title, message, app, icon, image, blockchain } = oneNotification;
@@ -180,6 +205,13 @@ const styles = StyleSheet.create({
     marginTop: 12,
     justifyContent: 'center',
   },
+  input: {
+    height: 40,
+    width: 320,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  }
 });
 
 export default App;
