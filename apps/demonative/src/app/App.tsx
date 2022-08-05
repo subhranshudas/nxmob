@@ -11,16 +11,15 @@ import {
   // Linking,
 } from 'react-native';
 
-import Checkmark from './icons/checkmark.svg';
-
 import { Notification } from '@dasubh/uimobile';
 
 import { DEFAULT_NOTIFICATIONS } from './notificationData';
 import { parseApiResponse } from './helpers';
 
+const notifData = parseApiResponse(DEFAULT_NOTIFICATIONS);
+
 export const App = () => {
   const scrollViewRef = useRef<null | ScrollView>(null);
-  const notifData = parseApiResponse(DEFAULT_NOTIFICATIONS);
 
   return (
     <>
@@ -37,7 +36,7 @@ export const App = () => {
             <Text style={styles.textLg}>EPNS notifications below</Text>
            
             {notifData.map((oneNotification, idx) => {
-             const {cta, title, message, app, icon, image} = oneNotification;
+             const {cta, title, message, app, icon, image, blockchain } = oneNotification;
 
               return (
                 <Notification
@@ -48,6 +47,7 @@ export const App = () => {
                   app={app}
                   icon={icon}
                   image={image}
+                  chainName={blockchain}
                 />
               );
             })}

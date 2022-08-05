@@ -17,27 +17,11 @@ import GLOBALS from '../globals';
 import { extractTimeStamp, MediaHelper as DownloadHelper } from './helpers';
 
 import config from '../config';
+import chainDetails from './chainDetails';
 
-import { LogBox } from "react-native";
 
-/**
- ********Temporary hack for ViewPropTypes starts*************
- */
-const ignoreWarns = [
-  "Migrate to ViewPropTypes exported from 'deprecated-react-native-prop-types'"
-];
-const warn = console.warn;
-console.warn = (...arg) => {
-  for (let i = 0; i < ignoreWarns.length; i++) {
-      if (arg[0].startsWith(ignoreWarns[i]))  return;
-  }
-  warn(...arg);
-};
-LogBox.ignoreLogs(ignoreWarns);
-/**
- ********Temporary hack for ViewPropTypes ends*************
- */
-
+// ================= Define types
+export type chainNameType = "ETH_TEST_KOVAN" | "POLYGON_TEST_MUMBAI" | "ETH_MAINNET" | "POLYGON_MAINNET" | "THE_GRAPH" | undefined;
 
 export type NotificationProps = {
   notificationTitle: string;
@@ -47,7 +31,9 @@ export type NotificationProps = {
   image: string;
   cta?: string;
   url?: string;
+  chainName: chainNameType;
 };
+
 
 export const Notification : React.FC<NotificationProps> = ({
   notificationTitle = '',
@@ -56,7 +42,8 @@ export const Notification : React.FC<NotificationProps> = ({
   app = '',
   icon = '',
   image = '',
-  url = ''
+  url = '',
+  chainName
 }) => {
   const videoPlayerRef = React.useRef(null);
   const ctaEnabled = Boolean(cta);
@@ -70,6 +57,8 @@ export const Notification : React.FC<NotificationProps> = ({
   // store the image to be displayed in this state variable
   const [ isVisible, setIsVisible ] = React.useState(false);
 
+  const ChainIcon = chainDetails[chainName] ? chainDetails[chainName].Icon : null;
+
   // Finally mark if the device is a tablet or a phone
   let contentInnerStyle = {};
   let contentImgStyle = {};
@@ -79,13 +68,14 @@ export const Notification : React.FC<NotificationProps> = ({
   let contentMsgVidStyle = {};
 
   let bgVidStyle = {};
-  let contentYoutubeStyle = {}
+  let contentYoutubeStyle = {
+    marginBottom: 12
+  }
   let contentBodyStyle = {};
-  let containMode:any = 'contain';
+  let containMode = 'contain';
 
   if (device.isTablet) {
     // Change the style to better suit tablet
-
     contentInnerStyle = {
       flexDirection: 'row',
       alignItems: 'center',
@@ -140,25 +130,25 @@ export const Notification : React.FC<NotificationProps> = ({
     borderColor: GLOBALS.COLORS.SLIGHT_GRAY,
     backgroundColor: GLOBALS.COLORS.GRADIENT_SECONDARY,
     borderWidth: 1,
-    borderRadius: 0
+    borderRadius: GLOBALS.ADJUSTMENTS.FEED_ITEM_RADIUS
   };
 
   if(ctaEnabled){
     ctaStyles['borderColor'] = GLOBALS.COLORS.GRADIENT_SECONDARY;
-    ctaStyles['borderWidth'] = 2;
+    ctaStyles['borderWidth'] = 1; // this is 1 in web
     ctaStyles['borderRadius'] = GLOBALS.ADJUSTMENTS.FEED_ITEM_RADIUS;
   }
 
   // to check valid url
   const validURL = (str: string) => {
     const pattern = new RegExp(
-      '^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$',
-      'i',
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
     ); // fragment locator
     return !!pattern.test(str);
   };
@@ -187,15 +177,21 @@ export const Notification : React.FC<NotificationProps> = ({
           <TouchableOpacity
             style={[styles.appLink]}
             disabled={!url}
-            onPress={() => {console.log(url);onPress(url)}}
+            onPress={() => onPress(url)}
           >
             <View style={[styles.appicon]}>
               <IPFSIcon icon={icon} />
             </View>
             <Text style={styles.apptext} numberOfLines={1}>
               {app}
-            </Text>
+            </Text>          
           </TouchableOpacity>
+
+          {chainDetails[chainName] ? (
+            <View style={styles.networkIcon} numberOfLines={1}>
+              <ChainIcon />
+            </View>
+          ) : null}  
         </View>
 
         <View style={styles.content}>
@@ -308,7 +304,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    paddingVertical: 7,
+    paddingVertical: 8,
     paddingHorizontal: 10,
     backgroundColor: GLOBALS.COLORS.SLIGHTER_GRAY,
     flexDirection: 'row',
@@ -331,7 +327,7 @@ const styles = StyleSheet.create({
     flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 6,
+    borderRadius: 5,
     height: 24,
     aspectRatio: 1,
     marginRight: 5,
@@ -341,9 +337,16 @@ const styles = StyleSheet.create({
   apptext: {
     marginRight: 10,
     marginLeft: 5,
-    fontSize: 12,
-    color: GLOBALS.COLORS.MID_BLACK_TRANS,
+    fontSize: 14,
+    color: GLOBALS.COLORS.BLACK,
+    fontWeight: '400',
+  },
+  networkIcon: {
+    fontSize: 9,
+    color: 'blue',
     fontWeight: '300',
+    height: 18,
+    width: 18
   },
   appsecret: {
     width: 16,
@@ -352,12 +355,15 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: GLOBALS.COLORS.WHITE,
+    padding: 12, // as per Web
+    paddingBottom: 0
   },
   contentLoader: {
     margin: 20,
   },
   contentVid: {
     width: '100%',
+    marginBottom: 12
   },
   msgVid: {
     borderColor: GLOBALS.COLORS.SLIGHT_GRAY,
@@ -375,38 +381,31 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   contentBody: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 0,
   },
   msgSub: {
-    fontSize: 16,
-    fontWeight: '300',
-    color: GLOBALS.COLORS.MID_BLACK_TRANS,
-    paddingVertical: 10,
+    fontSize: 18,
+    fontWeight: '400',
+    color: GLOBALS.COLORS.BLACK,
+    paddingVertical: 0,
   },
   msg: {
     paddingTop: 5,
-    paddingBottom: 20,
+    paddingBottom: 15,
   },
   timestampOuter: {
     display: 'flex',
     justifyContent: 'center',
     alignSelf: 'flex-end',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
+    paddingBottom: 8,
+    paddingHorizontal: 15,
     marginRight: -20,
-    borderTopLeftRadius: 5,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderColor: GLOBALS.COLORS.SLIGHT_GRAY,
     overflow: 'hidden',
-
-    backgroundColor: GLOBALS.COLORS.SLIGHTER_GRAY,
   },
   timestamp: {
-    fontWeight: '300',
-    fontSize: 12,
-
-    color: GLOBALS.COLORS.MID_BLACK_TRANS,
+    fontWeight: 'bold',
+    fontSize: 10,
+    color: '#808080',
   },
   image: {
     flex: 1,
@@ -414,6 +413,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     overflow: 'hidden',
+    marginBottom: 12 // same as web
   },
   overlayImage: {
     flex: 1,

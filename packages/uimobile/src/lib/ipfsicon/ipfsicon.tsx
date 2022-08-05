@@ -3,6 +3,7 @@ import * as React from 'react';
 import styled from 'styled-components/native';
 import { extractIPFSHashFromImageURL } from './helpers';
 
+
 type IPFSIconType = {
     icon: string | undefined
 };
@@ -37,14 +38,12 @@ export const IPFSIcon: React.FC<IPFSIconType> = ({
     }
 
     return (
-        <StyledImage
-            source={{uri : imageInBase64}}
-        />
+        <StyledImage source={{uri : imageInBase64}} />
     )
 };
 
 const StyledImage = styled.Image`
-    height: 20px;
-    width: 20px;
-    border-radius: 5px;
+  width: 24px;
+  height: 24px;
 `;
+
